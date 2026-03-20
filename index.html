@@ -132,41 +132,39 @@ margin-top:10px;
 <script>
 
 document.getElementById("athleteForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
-e.preventDefault();
+    const data = {
+        name: document.getElementById("name").value,
+        regNumber: document.getElementById("regNumber").value,
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        department: document.getElementById("department").value
+    };
 
-const data = {
-name: document.getElementById("name").value,
-regNumber: document.getElementById("regNumber").value,
-gender: document.getElementById("gender").value,
-dob: document.getElementById("dob").value,
-department: document.getElementById("department").value
-};
+    // Use your PUBLIC SITE URL here
+    const siteUrl = "https://orgfarm-3dd873524f-dev-ed.develop.my.site.com/athlete/services/apexrest/AthleteRegistration";
 
-fetch("https://orgfarm-3dd873524f-dev-ed.develop.my.salesforce.com/services/apexrest/athlete/register", {
-
-method: "POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body: JSON.stringify(data)
-
-})
-
-.then(response => response.text())
-.then(result => {
-
-document.getElementById("msg").innerHTML = "Athlete Registered Successfully";
-
-document.getElementById("athleteForm").reset();
-
-})
-.catch(error=>{
-document.getElementById("msg").innerHTML = "Error submitting form";
-});
-
+    fetch(siteUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+        mode: 'cors' // Required for local hosting
+    })
+    .then(response => {
+        if(!response.ok) throw new Error('Network response was not ok');
+        return response.text();
+    })
+    .then(result => {
+        document.getElementById("msg").innerHTML = "Athlete Registered Successfully";
+        document.getElementById("athleteForm").reset();
+    })
+    .catch(error => {
+        console.error("Salesforce Error:", error);
+        document.getElementById("msg").innerHTML = "Error: Check CORS or Permissions";
+    });
 });
 
 </script>
