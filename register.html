@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Athlete Registration</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#1e90ff,#00c6ff);
+animation:bgMove 10s infinite alternate;
+}
+
+@keyframes bgMove{
+0%{background-position:left;}
+100%{background-position:right;}
+}
+
+.container{
+width:380px;
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+color:#333;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ccc;
+transition:0.3s;
+}
+
+input:focus,select:focus{
+border-color:#1e90ff;
+outline:none;
+box-shadow:0 0 5px rgba(30,144,255,0.5);
+}
+
+button{
+width:100%;
+padding:12px;
+background:#1e90ff;
+border:none;
+border-radius:6px;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#0066cc;
+transform:scale(1.05);
+}
+
+.success{
+text-align:center;
+color:green;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Athlete Registration</h2>
+
+<form id="athleteForm">
+
+<input type="text" id="name" placeholder="Athlete Name" required>
+
+<input type="text" id="regNumber" placeholder="Register Number" required>
+
+<select id="gender">
+<option value="">Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+
+<input type="date" id="dob">
+
+<select id="department">
+<option value="">Select Department</option>
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+</select>
+
+<button type="submit">Register</button>
+
+</form>
+
+<div class="success" id="msg"></div>
+
+</div>
+
+<script>
+
+document.getElementById("athleteForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const data = {
+name: document.getElementById("name").value,
+regNumber: document.getElementById("regNumber").value,
+gender: document.getElementById("gender").value,
+dob: document.getElementById("dob").value,
+department: document.getElementById("department").value
+};
+
+fetch("https://orgfarm-3dd873524f-dev-ed.develop.my.salesforce.com/services/apexrest/athlete/register", {
+
+method: "POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify(data)
+
+})
+
+.then(response => response.text())
+.then(result => {
+
+document.getElementById("msg").innerHTML = "Athlete Registered Successfully";
+
+document.getElementById("athleteForm").reset();
+
+})
+.catch(error=>{
+document.getElementById("msg").innerHTML = "Error submitting form";
+});
+
+});
+
+</script>
+
+</body>
+</html>
