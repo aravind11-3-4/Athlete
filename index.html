@@ -1,173 +1,255 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Athlete Registration</title>
+    <title>Athlete Registration</title>
 
-<style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family: Arial, Helvetica, sans-serif;
-}
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e90ff, #00c6ff);
+            animation: bgMove 10s infinite alternate;
+        }
 
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#1e90ff,#00c6ff);
-animation:bgMove 10s infinite alternate;
-}
+        @keyframes bgMove {
+            0% {
+                background-position: left;
+            }
 
-@keyframes bgMove{
-0%{background-position:left;}
-100%{background-position:right;}
-}
+            100% {
+                background-position: right;
+            }
+        }
 
-.container{
-width:380px;
-background:white;
-padding:30px;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-animation:fadeIn 1s ease;
-}
+        .container {
+            width: 380px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-color:#333;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-input,select{
-width:100%;
-padding:10px;
-margin-bottom:15px;
-border-radius:6px;
-border:1px solid #ccc;
-transition:0.3s;
-}
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-input:focus,select:focus{
-border-color:#1e90ff;
-outline:none;
-box-shadow:0 0 5px rgba(30,144,255,0.5);
-}
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+        }
 
-button{
-width:100%;
-padding:12px;
-background:#1e90ff;
-border:none;
-border-radius:6px;
-color:white;
-font-size:16px;
-cursor:pointer;
-transition:0.3s;
-}
+        input:focus,
+        select:focus {
+            border-color: #1e90ff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+        }
 
-button:hover{
-background:#0066cc;
-transform:scale(1.05);
-}
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1e90ff;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.success{
-text-align:center;
-color:green;
-margin-top:10px;
-}
+        button:hover {
+            background: #0066cc;
+            transform: scale(1.05);
+        }
 
-</style>
+        .success {
+            text-align: center;
+            color: green;
+            margin-top: 10px;
+        }
+
+        .error-msg {
+            color: #e63946;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        input.invalid {
+            border-color: #e63946;
+            box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+        }
+    </style>
 
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<h2>Athlete Registration</h2>
+        <h2>Athlete Registration</h2>
 
-<form id="athleteForm">
+        <form id="athleteForm">
 
-<input type="text" id="name" placeholder="Athlete Name" required>
+            <input type="text" id="name" placeholder="Athlete Name" required>
 
-<input type="text" id="regNumber" placeholder="Register Number" required>
+            <input type="text" id="regNumber" placeholder="Register Number" required>
+            <input type="tel" id="phone" placeholder="Phone Number (10 digits)" pattern="[6-9][0-9]{9}" required>
+            <select id="gender">
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
 
-<select id="gender">
-<option value="">Select Gender</option>
-<option>Male</option>
-<option>Female</option>
-</select>
+            <input type="date" id="dob" required>
+            <span class="error-msg" id="dobError"></span>
 
-<input type="date" id="dob">
+            <select id="department">
+                <option value="">Select Department</option>
+                <option>MCA</option>
+                <option>M.Sc</option>
+                <option>MBA</option>
+                <option>CSE</option>
+                <option>IT</option>
+                <option>ECE</option>
+            </select>
 
-<select id="department">
-<option value="">Select Department</option>
-<option>CSE</option>
-<option>IT</option>
-<option>ECE</option>
-</select>
+            <button type="submit">Register</button>
 
-<button type="submit">Register</button>
+        </form>
 
-</form>
+        <div class="success" id="msg"></div>
 
-<div class="success" id="msg"></div>
+    </div>
 
-</div>
+    <script>
+        // --- DOB Validation Helper ---
+        function validateDOB(dobValue) {
+            if (!dobValue) {
+                return { valid: false, message: "Date of Birth is required." };
+            }
+            const today = new Date();
+            const dob = new Date(dobValue);
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age < 14) {
+                return { valid: false, message: "Athlete must be at least 14 years old." };
+            }
+            if (age > 35) {
+                return { valid: false, message: "Athlete must be 35 years old or younger." };
+            }
+            return { valid: true, message: "" };
+        }
 
-<script>
+        // Set min/max date bounds dynamically
+        (function setDOBBounds() {
+            const today = new Date();
+            const minDate = new Date(today.getFullYear() - 35, today.getMonth(), today.getDate());
+            const maxDate = new Date(today.getFullYear() - 14, today.getMonth(), today.getDate());
+            document.getElementById("dob").min = minDate.toISOString().split("T")[0];
+            document.getElementById("dob").max = maxDate.toISOString().split("T")[0];
+        })();
 
-document.getElementById("athleteForm").addEventListener("submit", function(e){
-    e.preventDefault();
+        // Real-time validation on DOB change
+        document.getElementById("dob").addEventListener("change", function () {
+            const result = validateDOB(this.value);
+            const errorEl = document.getElementById("dobError");
+            if (!result.valid) {
+                errorEl.textContent = result.message;
+                errorEl.style.display = "block";
+                this.classList.add("invalid");
+            } else {
+                errorEl.textContent = "";
+                errorEl.style.display = "none";
+                this.classList.remove("invalid");
+            }
+        });
 
-    const data = {
-        name: document.getElementById("name").value,
-        regNumber: document.getElementById("regNumber").value,
-        gender: document.getElementById("gender").value,
-        dob: document.getElementById("dob").value,
-        department: document.getElementById("department").value
-    };
+        document.getElementById("athleteForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-    // Use your PUBLIC SITE URL here
-    const siteUrl = "https://orgfarm-3dd873524f-dev-ed.develop.my.site.com/athlete/services/apexrest/AthleteRegistration";
+            // Validate DOB before submission
+            const dobValue = document.getElementById("dob").value;
+            const dobResult = validateDOB(dobValue);
+            const errorEl = document.getElementById("dobError");
+            if (!dobResult.valid) {
+                errorEl.textContent = dobResult.message;
+                errorEl.style.display = "block";
+                document.getElementById("dob").classList.add("invalid");
+                document.getElementById("dob").focus();
+                return;
+            }
 
-    fetch(siteUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-        mode: 'cors' // Required for local hosting
-    })
-    .then(response => {
-        if(!response.ok) throw new Error('Network response was not ok');
-        return response.text();
-    })
-    .then(result => {
-        document.getElementById("msg").innerHTML = "Athlete Registered Successfully";
-        document.getElementById("athleteForm").reset();
-    })
-    .catch(error => {
-        console.error("Salesforce Error:", error);
-        document.getElementById("msg").innerHTML = "Error: Check CORS or Permissions";
-    });
-});
+            const data = {
+                name: document.getElementById("name").value,
+                regNumber: document.getElementById("regNumber").value,
+                phone: document.getElementById("phone").value, // Add this line
+                gender: document.getElementById("gender").value,
+                dob: document.getElementById("dob").value,
+                department: document.getElementById("department").value
+            };
 
-</script>
+            // Use your PUBLIC SITE URL here
+            const siteUrl = "https://orgfarm-3dd873524f-dev-ed.develop.my.site.com/athlete/services/apexrest/AthleteRegistration";
+
+            fetch(siteUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data),
+                mode: 'cors' // Required for local hosting
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(result => {
+                    document.getElementById("msg").innerHTML = "Athlete Registered Successfully";
+                    document.getElementById("athleteForm").reset();
+                })
+                .catch(error => {
+                    console.error("Salesforce Error:", error);
+                    document.getElementById("msg").innerHTML = "Error: Check CORS or Permissions";
+                });
+        });
+
+    </script>
 
 </body>
+
 </html>
